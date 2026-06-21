@@ -16,7 +16,7 @@ if (isProd) {
     const formatQuery = (sql) => {
         let i = 1;
         // Traduction SQLite vers PostgreSQL
-        let pgSql = sql.replace(/AUTOINCREMENT/ig, 'SERIAL');
+        let pgSql = sql.replace(/INTEGER\s+PRIMARY\s+KEY\s+AUTOINCREMENT/ig, 'SERIAL PRIMARY KEY');
         pgSql = pgSql.replace(/REAL/ig, 'FLOAT');
         pgSql = pgSql.replace(/DATETIME/ig, 'TIMESTAMP');
         return pgSql.replace(/\?/g, () => `$${i++}`);
