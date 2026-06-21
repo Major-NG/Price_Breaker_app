@@ -33,7 +33,7 @@ app.post('/api/auth/register', async (req, res) => {
             [nom, email, hashedPassword, safeRole], 
             function(err) {
                 if (err) {
-                    if (err.message.includes('UNIQUE constraint failed')) {
+                    if (err.message.includes('UNIQUE constraint failed') || err.message.toLowerCase().includes('unique constraint')) {
                         return res.status(400).json({ message: 'Cet email est déjà utilisé.' });
                     }
                     return res.status(500).json({ message: 'Erreur lors de l\'inscription.' });
