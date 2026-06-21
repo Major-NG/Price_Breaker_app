@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRICE BREAKER TELECCOM</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Teko:wght@400;600;700&family=Inter:wght@300;400;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="price.css">
+</head>
+
+<body>
+
+    <!-- Barre d'annonces -->
+    <div class="top-bar" id="top-bar">
+        <div class="top-bar-inner">
+            <span class="top-bar-msg" id="top-bar-msg">🚚 Livraison gratuite dès 50 000 FCFA — Commandez par téléphone : <span id="top-bar-phone">+237 6XX XXX XXX</span></span>
+            <button class="top-bar-close" onclick="closeTopBar()" aria-label="Fermer">✕</button>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (Hidden by default) -->
+    <div id="admin-dashboard" class="hidden">
+        <div class="admin-container">
+            <h2>⚠️ PANNEAU DE CONTRÔLE ADMINISTRATEUR</h2>
+            <div id="admin-requests" class="admin-dashboard-actions">
+                <span>Accès total au système — Contrôle complet de la plateforme</span>
+                <div class="admin-btn-group admin-btn-group-wrap">
+                    <button class="btn-validate btn-view-stats" id="btn-stats" onclick="fetchStats()">📈 Statistiques</button>
+                    <button class="btn-validate btn-light" id="btn-add-product" onclick="openProductModal()">➕ Produit</button>
+                    <button class="btn-validate" style="background:var(--green-brand);color:#fff;" onclick="openContactEditor()">✏️ Contact</button>
+                    <button class="btn-validate btn-light" onclick="openSiteEditor()">🌐 Contenu Site</button>
+                    <button class="btn-validate btn-light" onclick="openPromoEditor()">🏷️ Codes Promo</button>
+                    <button class="btn-validate btn-light" onclick="openCategoryEditor()">📂 Catégories</button>
+                    <button class="btn-validate btn-light" onclick="openFaqEditor()">❓ FAQ</button>
+                    <button class="btn-validate" style="background:#4285F4;color:#fff;" onclick="openContactEditor()">🗺️ Adresse Google Maps & Contact</button>
+                    <button class="btn-validate btn-light" onclick="openOrdersPanel()"><i data-lucide="package" style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i> Commandes</button>
+                    <button class="btn-validate btn-light" onclick="openPartnersPanel()"><i data-lucide="users" style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i> Partenaires</button>
+                    <button class="btn-validate btn-light" onclick="openFlashEditor()">⚡ Vente Flash</button>
+                    <button class="btn-validate btn-light" onclick="exportSiteData()">💾 Exporter données</button>
+                    <button class="btn-validate btn-light" onclick="importSiteData()">📥 Importer données</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL MAPS EDITOR -->
+    <div id="maps-editor-modal" class="modal hidden">
+        <div class="modal-content contact-editor-content">
+            <span class="close-maps-editor" onclick="document.getElementById('maps-editor-modal').classList.add('hidden')">&times;</span>
+            <h2>🗺️ Configurer l'adresse Google Maps</h2>
+            <form id="maps-form" onsubmit="handleMapsSubmit(event)">
+                <div class="input-group">
+                    <label>Lien vers Google Maps (URL) :</label>
+                    <input type="url" id="input-maps-url" placeholder="https://maps.google.com/?q=..." style="width:100%;" required>
+                </div>
+                <button type="submit" class="btn-validate">Sauvegarder</button>
+            </form>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-container">
+            <div class="logo">
+                <img src="assets/LOGO_Price_Breaker.jpeg" alt="Logo Price Breaker" class="logo-img">
+                <h1>PRICE <span class="bre">BREAKER</span> <span class="tel">TELECCOM</span></h1>
+            </div>
+            <!-- Hamburger for mobile -->
+            <button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleMobileMenu()">
+                <span></span><span></span><span></span>
+            </button>
+            <nav id="main-nav">
+                <div class="mobile-search-wrap">
+                    <input type="search" id="mobile-search" class="header-search" placeholder="Rechercher..." onkeydown="if(event.key==='Enter'){document.getElementById('header-search').value=this.value;performSearch();closeMobileMenu();}">
+                    <button class="header-search-btn" onclick="document.getElementById('header-search').value=document.getElementById('mobile-search').value;performSearch();closeMobileMenu();">🔍</button>
+                </div>
+                <ul>
+                    <li><a href="#accueil" onclick="closeMobileMenu()">Accueil</a></li>
+                    <li><a href="#produits" onclick="closeMobileMenu()">Produits</a></li>
+                    <li><a href="#flash-sale" onclick="closeMobileMenu()">Vente Flash</a></li>
+                    <li><a href="#contact" onclick="closeMobileMenu()">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="header-search-wrap">
+                <input type="search" id="header-search" class="header-search" placeholder="Rechercher un produit..." autocomplete="off">
+                <button class="header-search-btn" onclick="performSearch()" aria-label="Rechercher">🔍</button>
+                <div id="search-suggestions" class="search-suggestions hidden"></div>
+            </div>
+            <div class="header-actions">
+                <!-- Dark/Light Mode Toggle -->
+                <button id="btn-theme" class="btn-theme" onclick="toggleTheme()" title="Changer le thème">🌙</button>
+                <div class="login-wrapper" id="auth-section">
+                    <button id="btn-login-modal" class="btn-auth">Connexion</button>
+                    <button id="btn-register-modal" class="btn-auth outline">Inscription</button>
+                </div>
+                <!-- Logged in state (Hidden by default) -->
+                <div class="login-wrapper hidden" id="user-info-section">
+                    <span id="user-welcome"></span>
+                    <button id="btn-logout" class="btn-auth">Déconnexion</button>
+                </div>
+                <div id="partner-actions">
+                    <!-- Bouton demande -->
+                </div>
+                <button class="btn-wishlist" id="btn-wishlist" onclick="openWishlistModal()" title="Favoris">
+                    <i data-lucide="heart" style="width:18px;height:18px;vertical-align:middle;"></i> <span id="wishlist-count">0</span>
+                </button>
+                <div class="cart" id="cart-btn" onclick="openCartModal()" style="cursor:pointer;">
+                    <span><i data-lucide="shopping-cart" style="width:18px;height:18px;vertical-align:middle;"></i> <span id="cart-count">0</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bandeau discret partenaire en attente -->
+        <div id="partner-banner" class="hidden">
+            Votre demande de partenariat est actuellement en attente de validation.
+        </div>
+    </header>
+
+    <main>
+        <section class="hero" id="accueil">
+            <div class="hero-carousel" id="hero-carousel">
+                <div class="hero-slide active" data-slide="0">
+                    <div class="hero-content">
+                        <h2 id="hero-title-0">Cassez les Prix, <br><span class="highlight">Boostez vos Marges</span></h2>
+                        <p id="hero-desc-0">La référence des accessoires électroniques et de la connectique.</p>
+                        <a href="#produits" class="btn btn-primary">Voir les offres</a>
+                    </div>
+                </div>
+                <div class="hero-slide" data-slide="1">
+                    <div class="hero-content">
+                        <h2>Prix <span class="highlight">Partenaires</span> Exclusifs</h2>
+                        <p>Devenez revendeur et accédez à des tarifs de gros imbattables.</p>
+                        <a href="#contact" class="btn btn-primary">Devenir partenaire</a>
+                    </div>
+                </div>
+                <div class="hero-slide" data-slide="2">
+                    <div class="hero-content">
+                        <h2>Livraison <span class="highlight">Rapide</span> 24–48h</h2>
+                        <p>Yaoundé, Douala et toutes les villes du Cameroun.</p>
+                        <a href="#flash-sale" class="btn btn-primary">Vente Flash ⚡</a>
+                    </div>
+                </div>
+            </div>
+            <button class="hero-nav hero-prev" onclick="heroPrev()" aria-label="Précédent">‹</button>
+            <button class="hero-nav hero-next" onclick="heroNext()" aria-label="Suivant">›</button>
+            <div class="hero-dots" id="hero-dots"></div>
+        </section>
+
+        <!-- Bandeau services (confiance) -->
+        <section class="services-strip" id="services-strip">
+            <div class="services-inner">
+                <div class="service-item">
+                    <span class="service-icon"><i data-lucide="rocket" style="width:40px;height:40px;vertical-align:middle;"></i></span>
+                    <div>
+                        <strong id="svc-title-0">Livraison rapide</strong>
+                        <p id="svc-desc-0">À partir de 24h</p>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon"><i data-lucide="check-circle" style="width:40px;height:40px;vertical-align:middle;"></i></span>
+                    <div>
+                        <strong id="svc-title-1">Produits authentiques</strong>
+                        <p id="svc-desc-1">100% garantis</p>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon"><i data-lucide="wrench" style="width:40px;height:40px;vertical-align:middle;"></i></span>
+                    <div>
+                        <strong id="svc-title-2">Service après-vente</strong>
+                        <p id="svc-desc-2">SAV agréé</p>
+                    </div>
+                </div>
+                <div class="service-item">
+                    <span class="service-icon"><i data-lucide="rotate-ccw" style="width:40px;height:40px;vertical-align:middle;"></i></span>
+                    <div>
+                        <strong id="svc-title-3">Retour facile</strong>
+                        <p id="svc-desc-3">Sous 7 jours</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Vente Flash -->
+        <section class="flash-section" id="flash-sale">
+            <div class="flash-header">
+                <div>
+                    <h2 class="flash-title">⚡ VENTE FLASH</h2>
+                    <p class="flash-subtitle" id="flash-subtitle">Offres limitées — Ne manquez pas !</p>
+                </div>
+                <div class="flash-countdown" id="flash-countdown">
+                    <div class="countdown-unit"><span id="cd-hours">00</span><small>Heures</small></div>
+                    <span class="countdown-sep">:</span>
+                    <div class="countdown-unit"><span id="cd-mins">00</span><small>Min</small></div>
+                    <span class="countdown-sep">:</span>
+                    <div class="countdown-unit"><span id="cd-secs">00</span><small>Sec</small></div>
+                </div>
+            </div>
+            <div class="flash-grid" id="flash-grid">
+                <!-- Produits flash générés par JS -->
+            </div>
+        </section>
+
+        <!-- Catégories rapides -->
+        <section class="quick-cats-section">
+            <div class="quick-cats-inner" id="quick-cats">
+                <!-- Pills générées par JS -->
+            </div>
+        </section>
+
+        <section class="products-section" id="produits">
+            <div class="section-header">
+                <h2>NOS CATÉGORIES DE PRODUITS</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="products-toolbar">
+                <div class="toolbar-left">
+                    <span class="products-count" id="products-count"></span>
+                </div>
+                <div class="toolbar-right">
+                    <select id="filter-category" class="toolbar-select" onchange="applyProductFilters()">
+                        <option value="">Toutes catégories</option>
+                    </select>
+                    <select id="sort-products" class="toolbar-select" onchange="applyProductFilters()">
+                        <option value="default">Tri par défaut</option>
+                        <option value="price-asc">Prix croissant</option>
+                        <option value="price-desc">Prix décroissant</option>
+                        <option value="name-asc">Nom A–Z</option>
+                    </select>
+                    <button class="btn-toolbar" id="btn-view-grid" onclick="setProductView('grid')" title="Grille">▦</button>
+                    <button class="btn-toolbar" id="btn-view-list" onclick="setProductView('list')" title="Liste">☰</button>
+                </div>
+            </div>
+            <div id="search-results-banner" class="search-results-banner hidden"></div>
+            <div id="admin-product-shortcut" class="hidden admin-shortcut-container">
+                <button class="btn-primary shortcut-btn" onclick="openProductModal()">➕ Ajouter un Produit
+                    (Raccourci)</button>
+            </div>
+            <div id="categories-container" class="categories-container">
+                <!-- Les catégories et produits seront générés dynamiquement par JS -->
+            </div>
+        </section>
+
+        <!-- Produits récemment consultés -->
+        <section class="recent-section hidden" id="recent-section">
+            <div class="section-header">
+                <h2>VU RÉCEMMENT</h2>
+                <div class="divider"></div>
+            </div>
+            <div class="recent-grid" id="recent-grid"></div>
+        </section>
+
+        <!-- Newsletter -->
+        <section class="newsletter-section" id="newsletter">
+            <div class="newsletter-inner">
+                <div class="newsletter-text">
+                    <h2 id="newsletter-title">Recevez nos offres exclusives</h2>
+                    <p id="newsletter-desc">Inscrivez-vous et obtenez jusqu'à 10% de réduction sur votre première commande.</p>
+                </div>
+                <form class="newsletter-form" id="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                    <input type="email" id="newsletter-email" placeholder="votre@email.com" required class="auth-input newsletter-input">
+                    <button type="submit" class="btn-primary newsletter-btn">S'inscrire</button>
+                </form>
+                <p class="newsletter-success hidden" id="newsletter-success"><i data-lucide="check-circle" style="width:40px;height:40px;vertical-align:middle;"></i> Inscription réussie !</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Section Contact -->
+    <section class="contact-section" id="contact">
+        <div class="section-header">
+            <h2>NOUS CONTACTER</h2>
+            <div class="divider"></div>
+        </div>
+        <div class="contact-inner">
+            <!-- Infos rapides -->
+            <div class="contact-cards">
+                <div class="contact-card">
+                    <div class="contact-card-icon">📧</div>
+                    <h3>Email</h3>
+                    <p id="ci-email">contact@pricebreaker.com</p>
+                    <a id="ci-email-link" href="mailto:contact@pricebreaker.com" class="contact-card-link">Envoyer →</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-card-icon">📱</div>
+                    <h3>WhatsApp</h3>
+                    <p id="ci-wa1">+237 6XX XXX XXX</p>
+                    <p id="ci-wa2" style="font-size:0.85rem;color:var(--text-muted);">+237 6XX XXX XXX</p>
+                    <a id="ci-wa1-link" href="https://wa.me/237600000000" target="_blank" class="contact-card-link">Écrire →</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-card-icon">📍</div>
+                    <h3>Adresse</h3>
+                    <p id="ci-address">Yaoundé, Cameroun</p>
+                    <a href="#" id="ci-maps-link" class="contact-card-link" target="_blank">Voir sur Maps →</a>
+                </div>
+                <div class="contact-card">
+                    <div class="contact-card-icon">⏰</div>
+                    <h3>Horaires</h3>
+                    <p id="ci-hours">Lun–Sam : 8h–20h<br>Dim : 10h–17h</p>
+                    <span class="badge-open" id="badge-open"></span>
+                </div>
+            </div>
+
+            <!-- Formulaire + FAQ -->
+            <div class="contact-layout">
+                <!-- Formulaire -->
+                <div class="contact-form-bloc">
+                    <h2>Envoyer un <span>message</span></h2>
+                    <p class="contact-form-desc">Remplissez le formulaire et nous vous répondrons sous 24h.</p>
+                    <form class="contact-form" id="contact-form" onsubmit="handleContactSubmit(event)">
+                        <div class="champs-row">
+                            <div class="champ">
+                                <label for="c-prenom">Prénom *</label>
+                                <input type="text" id="c-prenom" placeholder="Jean" required class="auth-input">
+                            </div>
+                            <div class="champ">
+                                <label for="c-nom">Nom *</label>
+                                <input type="text" id="c-nom" placeholder="Dupont" required class="auth-input">
+                            </div>
+                        </div>
+                        <div class="champ">
+                            <label for="c-email">Email *</label>
+                            <input type="email" id="c-email" placeholder="votre@email.com" required class="auth-input">
+                        </div>
+                        <div class="champ">
+                            <label for="c-sujet">Sujet</label>
+                            <select id="c-sujet" class="auth-input">
+                                <option value="">Choisir un sujet...</option>
+                                <option value="commande">Ma commande</option>
+                                <option value="produit">Question produit</option>
+                                <option value="partenariat">Devenir partenaire</option>
+                                <option value="livraison">Livraison</option>
+                                <option value="retour">Retour / Remboursement</option>
+                                <option value="autre">Autre</option>
+                            </select>
+                        </div>
+                        <div class="champ">
+                            <label for="c-message">Message *</label>
+                            <textarea id="c-message" placeholder="Décrivez votre demande..." required rows="5"
+                                class="auth-input" oninput="updateCharCount()"></textarea>
+                            <span class="char-count" id="char-count">0 / 500</span>
+                        </div>
+                        <div class="champ-check">
+                            <input type="checkbox" id="c-cgu" required>
+                            <label for="c-cgu">J'accepte que mes données soient utilisées pour traiter ma
+                                demande.</label>
+                        </div>
+                        <div class="form-succes" id="form-succes" style="display:none;"><i data-lucide="check-circle" style="width:40px;height:40px;vertical-align:middle;"></i> Message envoyé ! Nous vous
+                            répondrons sous 24h.</div>
+                        <button type="submit" class="btn-envoyer" id="btn-envoyer">
+                            <span class="btn-texte">Envoyer le message →</span>
+                            <span class="btn-loader" style="display:none;"><i data-lucide="loader" style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i> Envoi...</span>
+                        </button>
+                    </form>
+                </div>
+
+                <!-- FAQ -->
+                <aside class="contact-aside">
+                    <div class="apropos-bloc">
+                        <h2>À propos de <span>nous</span></h2>
+                        <p>PriceBreaker Teleccom est spécialisé dans les accessoires électroniques premium pour
+                            l'Afrique centrale. Notre mission : rendre la tech de qualité accessible à tous.</p>
+                        <div class="stats-apropos">
+                            <div class="stat-ap">
+                                <div class="stat-ap-nb">500<span>+</span></div>
+                                <div class="stat-ap-label">Produits</div>
+                            </div>
+                            <div class="stat-ap">
+                                <div class="stat-ap-nb">12k<span>+</span></div>
+                                <div class="stat-ap-label">Clients</div>
+                            </div>
+                            <div class="stat-ap">
+                                <div class="stat-ap-nb">48<span>h</span></div>
+                                <div class="stat-ap-label">Livraison max</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="faq-bloc">
+                        <h3>Questions fréquentes</h3>
+                        <div class="faq-liste">
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFaq(this)">Comment devenir partenaire
+                                    revendeur ?<span class="faq-icone">+</span></button>
+                                <div class="faq-reponse">Créez un compte et sélectionnez "Partenaire". Notre équipe
+                                    validera votre profil et vous aurez accès aux prix de gros.</div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFaq(this)">Quels sont les délais de
+                                    livraison ?<span class="faq-icone">+</span></button>
+                                <div class="faq-reponse">Livraison à Yaoundé sous 24h, dans les autres villes sous 48h.
+                                    Livraison gratuite dès 50 000 FCFA d'achat.</div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFaq(this)">Puis-je retourner un produit
+                                    ?<span class="faq-icone">+</span></button>
+                                <div class="faq-reponse">Oui, vous disposez de 7 jours après réception pour retourner un
+                                    produit non ouvert.</div>
+                            </div>
+                            <div class="faq-item">
+                                <button class="faq-question" onclick="toggleFaq(this)">Les produits sont-ils garantis
+                                    ?<span class="faq-icone">+</span></button>
+                                <div class="faq-reponse">Tous nos produits bénéficient d'une garantie de 1 à 6 mois
+                                    selon le type d'accessoire.</div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-col footer-brand">
+                <h2>PRICE <span>BREAKER</span></h2>
+                <p id="footer-tagline">La référence des accessoires électroniques en Afrique centrale.</p>
+                <div class="footer-social">
+                    <a href="#" id="social-fb" title="Facebook"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512" style="width:24px;height:24px;fill:currentColor;"><path d="M80 299.3V512H216V299.3H275.2l15.2-91.2H216V153.2C216 137.4 227.1 128 246.8 128h28.2V31.5C275.2 31.5 251.8 28 227.8 28 178 28 144 58.3 144 112.7v95.3H80V299.3z"/></svg></a>
+                    <a href="#" id="social-ig" title="Instagram"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width:24px;height:24px;fill:currentColor;"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"/></svg></a>
+                    <a href="#" id="social-wa" title="WhatsApp"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" style="width:24px;height:24px;fill:currentColor;"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zM223.9 413.5c-33.6 0-66.5-9-95.2-26.1l-6.8-4-70.8 18.6 18.9-69-4.4-7C46.8 296 36.3 260.6 36.3 223.9 36.3 120.3 120.7 36 224.2 36c50.3 0 97.5 19.6 133.1 55.2 35.6 35.6 55.2 82.8 55.2 133.2 0 103.5-84.3 189.1-188.6 189.1zm103.6-141c-5.7-2.8-33.6-16.6-38.8-18.5-5.2-1.9-9-2.8-12.8 2.8-3.8 5.7-14.7 18.5-18 22.3-3.3 3.8-6.6 4.3-12.3 1.4-5.7-2.8-24-8.8-45.7-28.1-16.9-15-28.3-33.6-31.6-39.3-3.3-5.7-.4-8.8 2.5-11.6 2.6-2.6 5.7-6.6 8.5-9.9 2.8-3.3 3.8-5.7 5.7-9.5 1.9-3.8.9-7.1-.4-9.9-1.4-2.8-12.8-30.8-17.5-42.1-4.6-11.1-9.3-9.6-12.8-9.8-3.3-.2-7.1-.2-10.9-.2-3.8 0-9.9 1.4-15.1 7.1-5.2 5.7-20.1 19.6-20.1 47.8s20.6 55.4 23.4 59.2c2.8 3.8 40.3 61.5 97.6 86.2 13.6 5.8 24.3 9.3 32.6 11.9 13.7 4.3 26.1 3.7 35.9 2.2 11.1-1.7 33.6-13.7 38.3-27 4.7-13.3 4.7-24.7 3.3-27-1.4-2.3-5.2-3.8-10.9-6.6z"/></svg></a>
+                </div>
+            </div>
+            <div class="footer-col">
+                <h3>Service Client</h3>
+                <ul id="footer-links-1">
+                    <li><a href="#contact">Nous contacter</a></li>
+                    <li><a href="#contact">Politique de retour</a></li>
+                    <li><a href="#contact">Frais de livraison</a></li>
+                    <li><a href="#contact">Centre d'aide</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>À propos</h3>
+                <ul>
+                    <li><a href="#">Qui sommes-nous</a></li>
+                    <li><a href="#" onclick="openContactEditor(); return false;">Devenir partenaire</a></li>
+                    <li><a href="#produits">Nos produits</a></li>
+                    <li><a href="#flash-sale">Vente Flash</a></li>
+                    <li><a href="#" onclick="document.getElementById('cgv-modal').classList.remove('hidden'); return false;">CGV & Mentions légales</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Paiement</h3>
+                <p class="footer-pay">Mobile Money • Orange Money • MTN MoMo • Espèces à la livraison</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Price Breaker Teleccom. Tous droits réservés.</p>
+        </div>
+    </footer>
+
+    <!-- Scroll to top -->
+    <button class="scroll-top hidden" id="scroll-top" onclick="scrollToTop()" aria-label="Retour en haut">↑</button>
+
+    <!-- Auth Modal -->
+    <div id="auth-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h2 id="modal-title">Connexion</h2>
+            <div id="auth-error" class="error-msg hidden"></div>
+            <form id="auth-form" style="display: flex; flex-direction: column; align-items: center;">
+                <input type="text" id="nom" placeholder="Nom complet" class="hidden auth-input">
+                <input type="email" id="email" placeholder="Email" required class="auth-input">
+                <input type="tel" id="telephone" placeholder="Numéro de téléphone" class="hidden auth-input">
+                <input type="password" id="password" placeholder="Mot de passe" required class="auth-input">
+                <select id="role" class="hidden auth-input">
+                    <option value="client">Client</option>
+                    <option value="partenaire">Partenaire</option>
+                </select>
+                <label id="rgpd-auth-container" class="hidden" style="display:flex; align-items:flex-start; gap:8px; margin-top:10px; color:#ccc; font-size:0.85rem; line-height:1.4; text-align:left; width: 100%;">
+                    <input type="checkbox" id="rgpd-auth" style="margin-top:3px; cursor:pointer;">
+                    J'accepte les CGV et la politique de confidentialité (RGPD).
+                </label>
+                <button type="submit" id="btn-auth-submit" class="btn-primary"
+                    style="width: 100%; margin-top: 15px; height: 40px;">
+                    <h2>Valider</h2>
+                </button>
+            </form>
+            <div style="text-align: center; margin-top: 15px;">
+                <button type="button" id="btn-switch-admin" class="btn-auth outline" style="font-size: 0.85rem;">🔒
+                    Accès Administrateur</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Stats Modal -->
+    <div id="stats-modal" class="modal hidden">
+        <div class="modal-content stats-content">
+            <span class="close-stats-modal">&times;</span>
+            <h2>📊 Statistiques Administrateur</h2>
+            <div class="stats-box">
+                <p>Chiffre d'affaires global : <strong id="stats-revenue" style="color: var(--green-neon);">...</strong>
+                </p>
+            </div>
+            <h3>Top Produits</h3>
+            <ul id="stats-top-products" class="stats-list"></ul>
+        </div>
+    </div>
+
+    <!-- Product Management Modal -->
+    <div id="product-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-product-modal">&times;</span>
+            <h2 id="product-modal-title">Nouveau Produit</h2>
+            <form id="product-form">
+                <input type="hidden" id="product-id">
+                <input type="text" id="product-nom" placeholder="Nom du produit" required class="auth-input">
+                <fieldset class="price-fieldset">
+                    <legend class="price-legend">Prix (FCFA)</legend>
+                    <input type="number" id="product-prix-public" placeholder="Prix Public (Ex: 15000)" required
+                        class="auth-input">
+                    <input type="number" id="product-prix-partenaire" placeholder="Prix Partenaire (Ex: 10000)" required
+                        class="auth-input">
+                </fieldset>
+                <select id="product-categorie" required class="auth-input">
+                    <option value="⭐️ Meilleures Ventes">⭐️ Meilleures Ventes</option>
+                    <option value="🔥 Promotions">🔥 Promotions</option>
+                    <option value="✨ Nouveautés">✨ Nouveautés</option>
+                    <option value="🎧 Audio & Son">🎧 Audio & Son</option>
+                    <option value="🔌 Accessoires & Câblage">🔌 Accessoires & Câblage</option>
+                    <option value="Non classé">Non classé</option>
+                </select>
+                <input type="text" id="product-image" placeholder="URL Image (Ex: assets/casque.jpg)"
+                    class="auth-input">
+                <fieldset class="price-fieldset" style="margin-top:10px;">
+                    <legend class="price-legend">Gestion (Stock & Réduction)</legend>
+                    <input type="number" id="product-stock" placeholder="Stock disponible" required class="auth-input" value="100">
+                    <label style="display:flex; align-items:center; gap:8px; margin-top:10px; color:#ddd; font-size:0.9rem;">
+                        <input type="checkbox" id="product-allow-discount" checked>
+                        Autoriser les remises dégressives (volume) sur ce produit
+                    </label>
+                </fieldset>
+
+                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 15px;">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div id="cart-modal" class="modal hidden">
+        <div class="modal-content cart-content">
+            <span class="close-cart-modal" id="close-cart-modal">&times;</span>
+            <h2><i data-lucide="shopping-cart" style="width:18px;height:18px;vertical-align:middle;"></i> Mon Panier</h2>
+            <div id="cart-items-container">
+                <!-- items -->
+            </div>
+            <div id="cart-empty-msg" class="cart-empty" style="display:none;">
+                <div style="font-size: 3rem;"><i data-lucide="shopping-cart" style="width:18px;height:18px;vertical-align:middle;"></i></div>
+                <p>Votre panier est vide.</p>
+                <a href="#produits" class="btn btn-primary"
+                    onclick="document.getElementById('cart-modal').classList.add('hidden')">Voir les produits</a>
+            </div>
+            <div id="cart-recap" style="display:none;">
+                <div class="cart-recap-line">
+                    <span>Sous-total</span>
+                    <span id="cart-subtotal">0 FCFA</span>
+                </div>
+                <div class="cart-recap-line">
+                    <span>Livraison</span>
+                    <span id="cart-livraison">3 500 FCFA</span>
+                </div>
+                <div class="cart-recap-line cart-total">
+                    <span>TOTAL</span>
+                    <span id="cart-total">0 FCFA</span>
+                </div>
+                <div id="cart-livraison-info" class="cart-livraison-info"></div>
+                <div class="promo-bloc">
+                    <p class="promo-label">Code promo</p>
+                    <div class="promo-form">
+                        <input type="text" id="cart-code-promo" placeholder="Entrez votre code..."
+                            class="auth-input promo-input">
+                        <button onclick="applyCartPromo()" class="btn-primary promo-btn">OK</button>
+                    </div>
+                    <p class="promo-msg" id="cart-promo-msg"></p>
+                </div>
+                <button class="btn-primary" style="width:100%; margin-top:15px;" onclick="openCheckoutModal()">Passer la
+                    commande →</button>
+            </div>
+        </div>
+    </div>
+    <!-- Admin Contact Editor Modal -->
+    <div id="contact-editor-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-contact-editor" id="close-contact-editor">&times;</span>
+            <h2>✏️ Modifier les infos Contact</h2>
+            <form id="contact-editor-form" onsubmit="saveContactInfo(event)">
+                <label class="editor-label">Email</label>
+                <input type="email" id="ce-email" class="auth-input" placeholder="contact@pricebreaker.com" required>
+
+                <label class="editor-label">WhatsApp N°1</label>
+                <input type="text" id="ce-wa1" class="auth-input" placeholder="+237 6XX XXX XXX" required>
+
+                <label class="editor-label">WhatsApp N°2</label>
+                <input type="text" id="ce-wa2" class="auth-input" placeholder="+237 6XX XXX XXX">
+
+                <label class="editor-label">Numéro d'Appels</label>
+                <input type="text" id="ce-call" class="auth-input" placeholder="+237 6XX XXX XXX" required>
+
+                <label class="editor-label">Adresse</label>
+                <input type="text" id="ce-address" class="auth-input" placeholder="Yaoundé, Cameroun" required>
+                
+                <label class="editor-label">Lien Google Maps (URL)</label>
+                <input type="url" id="ce-maps-url" class="auth-input" placeholder="https://maps.google.com/..." required>
+
+                <label class="editor-label">Horaires (Lun–Sam)</label>
+                <input type="text" id="ce-hours-week" class="auth-input" placeholder="8h–20h" required>
+
+                <label class="editor-label">Horaires (Dimanche)</label>
+                <input type="text" id="ce-hours-sun" class="auth-input" placeholder="10h–17h" required>
+
+                <button type="submit" class="btn-primary" style="width:100%;margin-top:15px;">💾 Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Quick View Modal -->
+    <div id="quickview-modal" class="modal hidden">
+        <div class="modal-content quickview-content">
+            <span class="close-quickview" onclick="closeQuickView()">&times;</span>
+            <div class="quickview-body" id="quickview-body"></div>
+        </div>
+    </div>
+
+    <!-- Wishlist Modal -->
+    <div id="wishlist-modal" class="modal hidden">
+        <div class="modal-content cart-content">
+            <span class="close-wishlist" onclick="closeWishlistModal()">&times;</span>
+            <h2><i data-lucide="heart" style="width:18px;height:18px;vertical-align:middle;"></i> Mes Favoris</h2>
+            <div id="wishlist-items"></div>
+            <div id="wishlist-empty" class="cart-empty">
+                <p>Aucun favori pour le moment.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="modal hidden">
+        <div class="modal-content checkout-content">
+            <span class="close-checkout" onclick="closeCheckoutModal()">&times;</span>
+            <h2>📋 Finaliser la commande</h2>
+            <form id="checkout-form" onsubmit="submitCheckout(event)">
+                <div class="champs-row">
+                    <div class="champ">
+                        <label>Nom complet *</label>
+                        <input type="text" id="co-nom" required class="auth-input">
+                    </div>
+                    <div class="champ">
+                        <label>Téléphone *</label>
+                        <input type="tel" id="co-tel" required class="auth-input" placeholder="+237 6XX XXX XXX">
+                    </div>
+                </div>
+                <div class="champ">
+                    <label>Ville *</label>
+                    <select id="co-ville" class="auth-input" required>
+                        <option value="">Choisir...</option>
+                        <option value="Yaoundé">Yaoundé</option>
+                        <option value="Douala">Douala</option>
+                        <option value="Bafoussam">Bafoussam</option>
+                        <option value="Garoua">Garoua</option>
+                        <option value="Autre">Autre ville</option>
+                    </select>
+                </div>
+                <div class="champ">
+                    <label>Adresse de livraison *</label>
+                    <input type="text" id="co-adresse" required class="auth-input" placeholder="Quartier, rue...">
+                </div>
+                <div class="champ">
+                    <label>Mode de paiement *</label>
+                    <select id="co-paiement" class="auth-input" required>
+                        <option value="momo">MTN Mobile Money</option>
+                        <option value="orange">Orange Money</option>
+                        <option value="cash">Paiement à la livraison</option>
+                    </select>
+                </div>
+                <div class="checkout-recap" id="checkout-recap"></div>
+                <label style="display:flex; align-items:flex-start; gap:8px; margin-top:15px; color:#ccc; font-size:0.85rem; line-height:1.4; text-align:left;">
+                    <input type="checkbox" id="rgpd-checkout" required style="margin-top:3px; cursor:pointer;">
+                    J'accepte les Conditions Générales de Vente (CGV) et je consens au traitement de mes données pour la commande.
+                </label>
+                <button type="submit" class="btn-primary" style="width:100%;margin-top:15px;">Confirmer la commande →</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin: Site Content Editor -->
+    <div id="site-editor-modal" class="modal hidden">
+        <div class="modal-content admin-modal-wide">
+            <span class="close-site-editor" onclick="closeModalById('site-editor-modal')">&times;</span>
+            <h2>🌐 Modifier le contenu du site</h2>
+            <form id="site-editor-form" onsubmit="saveSiteContent(event)">
+                <label class="editor-label">Barre d'annonces</label>
+                <input type="text" id="se-topbar" class="auth-input">
+                <label class="editor-label">Slide Hero 1 — Titre</label>
+                <input type="text" id="se-hero1-title" class="auth-input">
+                <label class="editor-label">Slide Hero 1 — Description</label>
+                <input type="text" id="se-hero1-desc" class="auth-input">
+                <label class="editor-label">Slide Hero 2 — Titre</label>
+                <input type="text" id="se-hero2-title" class="auth-input">
+                <label class="editor-label">Slide Hero 2 — Description</label>
+                <input type="text" id="se-hero2-desc" class="auth-input">
+                <label class="editor-label">Slide Hero 3 — Titre</label>
+                <input type="text" id="se-hero3-title" class="auth-input">
+                <label class="editor-label">Slide Hero 3 — Description</label>
+                <input type="text" id="se-hero3-desc" class="auth-input">
+                <label class="editor-label">Sous-titre Vente Flash</label>
+                <input type="text" id="se-flash-sub" class="auth-input">
+                <label class="editor-label">Newsletter — Titre</label>
+                <input type="text" id="se-news-title" class="auth-input">
+                <label class="editor-label">Newsletter — Description</label>
+                <input type="text" id="se-news-desc" class="auth-input">
+                <label class="editor-label">Footer — Slogan</label>
+                <input type="text" id="se-footer-tag" class="auth-input">
+                <hr style="border-color:var(--border-color);margin:15px 0;">
+                <p class="editor-label">Bandeau Services (4 blocs)</p>
+                <input type="text" id="se-svc0-t" class="auth-input" placeholder="Service 1 titre">
+                <input type="text" id="se-svc0-d" class="auth-input" placeholder="Service 1 desc">
+                <input type="text" id="se-svc1-t" class="auth-input" placeholder="Service 2 titre">
+                <input type="text" id="se-svc1-d" class="auth-input" placeholder="Service 2 desc">
+                <input type="text" id="se-svc2-t" class="auth-input" placeholder="Service 3 titre">
+                <input type="text" id="se-svc2-d" class="auth-input" placeholder="Service 3 desc">
+                <input type="text" id="se-svc3-t" class="auth-input" placeholder="Service 4 titre">
+                <input type="text" id="se-svc3-d" class="auth-input" placeholder="Service 4 desc">
+                <button type="submit" class="btn-primary" style="width:100%;margin-top:15px;">💾 Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin: Promo Codes Editor -->
+    <div id="promo-editor-modal" class="modal hidden">
+        <div class="modal-content admin-modal-wide">
+            <span class="close-promo-editor" onclick="closeModalById('promo-editor-modal')">&times;</span>
+            <h2>🏷️ Gérer les codes promo</h2>
+            <div class="admin-add-row">
+                <input type="text" id="new-promo-code" class="auth-input" placeholder="CODE">
+                <input type="number" id="new-promo-pct" class="auth-input" placeholder="% réduction" min="1" max="99">
+                <button class="btn-primary" onclick="addPromoCode()">Ajouter</button>
+            </div>
+            <ul id="promo-list" class="admin-list"></ul>
+        </div>
+    </div>
+
+    <!-- Admin: Categories Editor -->
+    <div id="category-editor-modal" class="modal hidden">
+        <div class="modal-content admin-modal-wide">
+            <span class="close-category-editor" onclick="closeModalById('category-editor-modal')">&times;</span>
+            <h2>📂 Gérer les catégories</h2>
+            <div class="admin-add-row">
+                <input type="text" id="new-category-name" class="auth-input" placeholder="Nom catégorie (ex: 🎧 Audio)">
+                <button class="btn-primary" onclick="addCategory()">Ajouter</button>
+            </div>
+            <ul id="category-list" class="admin-list"></ul>
+        </div>
+    </div>
+
+    <!-- Admin: FAQ Editor -->
+    <div id="faq-editor-modal" class="modal hidden">
+        <div class="modal-content admin-modal-wide">
+            <span class="close-faq-editor" onclick="closeModalById('faq-editor-modal')">&times;</span>
+            <h2>❓ Gérer la FAQ</h2>
+            <div class="admin-add-row admin-add-col">
+                <input type="text" id="new-faq-q" class="auth-input" placeholder="Question">
+                <textarea id="new-faq-a" class="auth-input" placeholder="Réponse" rows="2"></textarea>
+                <button class="btn-primary" onclick="addFaqItem()">Ajouter</button>
+            </div>
+            <ul id="faq-admin-list" class="admin-list"></ul>
+        </div>
+    </div>
+
+    <!-- Admin: Orders Panel -->
+    <div id="orders-panel-modal" class="modal hidden">
+        <div class="modal-content admin-modal-wide">
+            <span class="close-orders-panel" onclick="closeModalById('orders-panel-modal')">&times;</span>
+            <h2><i data-lucide="package" style="width:16px;height:16px;vertical-align:middle;margin-right:4px;"></i> Commandes reçues</h2>
+            <div id="orders-list" class="orders-list"></div>
+        </div>
+    </div>
+
+    <!-- Admin: Partners Panel -->
+    <div id="partners-panel-modal" class="modal hidden">
+        <div class="modal-content admin-modal-wide">
+            <span class="close-partners-panel" onclick="closeModalById('partners-panel-modal')">&times;</span>
+            <h2>🤝 Demandes partenaires</h2>
+            <div id="partners-list" class="orders-list"></div>
+        </div>
+    </div>
+
+    <!-- Admin: Flash Sale Editor -->
+    <div id="flash-editor-modal" class="modal hidden">
+        <div class="modal-content admin-modal-wide">
+            <span class="close-flash-editor" onclick="closeModalById('flash-editor-modal')">&times;</span>
+            <h2>⚡ Configurer la Vente Flash</h2>
+            <form id="flash-editor-form" onsubmit="saveFlashConfig(event)">
+                <label class="editor-label">Durée (heures)</label>
+                <input type="number" id="fe-duration" class="auth-input" min="1" max="72" value="24">
+                <label class="editor-label">IDs produits flash (séparés par virgule)</label>
+                <input type="text" id="fe-product-ids" class="auth-input" placeholder="2,4,6,10">
+                <label class="editor-label">Réduction flash (%)</label>
+                <input type="number" id="fe-discount" class="auth-input" min="5" max="70" value="15">
+                <button type="submit" class="btn-primary" style="width:100%;margin-top:15px;">💾 Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Admin: Services Editor (in site editor - separate small modal) -->
+    <div id="services-editor-modal" class="modal hidden">
+        <div class="modal-content admin-modal-wide">
+            <span onclick="closeModalById('services-editor-modal')">&times;</span>
+            <h2>Services — Bandeau confiance</h2>
+            <form id="services-editor-form" onsubmit="saveServicesContent(event)">
+                <div id="services-editor-fields"></div>
+                <button type="submit" class="btn-primary" style="width:100%;margin-top:15px;">💾 Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- CGV Modal -->
+    <div id="cgv-modal" class="modal hidden">
+        <div class="modal-content contact-editor-content" style="max-width: 600px; text-align: left; overflow-y: auto; max-height: 80vh;">
+            <span class="close-cgv" onclick="document.getElementById('cgv-modal').classList.add('hidden')">&times;</span>
+            <h2>📜 Conditions Générales de Vente & RGPD</h2>
+            <div style="margin-top: 15px; font-size: 0.9rem; line-height: 1.5; color: #ccc;">
+                <h3>1. Application des CGV</h3>
+                <p>Les présentes CGV s'appliquent à toutes les ventes conclues sur le site Price Breaker. En cochant la case d'acceptation, le client reconnaît en avoir pris connaissance.</p>
+                <h3>2. Politique de Remises (Prix Dégressifs)</h3>
+                <p>Des remises basées sur le volume (-5% pour 10+, -8% pour 30+, -12% pour 50+) s'appliquent automatiquement sur le prix public des articles éligibles. Price Breaker se réserve le droit d'exclure certains "produits d'appel" de cette politique.</p>
+                <h3>3. Politique de Confidentialité (RGPD)</h3>
+                <p>Vos données personnelles (nom, email, téléphone, adresse) sont collectées uniquement dans le but de traiter votre commande et d'assurer le service après-vente. Elles ne seront jamais revendues à des tiers.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="price.js"></script>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

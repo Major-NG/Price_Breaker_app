@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1920, initial-scale=1.0">
+    <title>FRED'S CATALOGUE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --text-light: #f8fafc;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --accent: #ec4899;
+            --danger: #ef4444;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: #f4f4f4;
+            color: #333;
+        }
+        .header {
+            background: linear-gradient(135deg, var(--primary), #190769, #da0b9b);
+            color: #f5f2f2
+            padding: 50px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+        .logo {
+            max-height: 200px;
+            max-width: 400px;
+            border-radius: 20px;
+            background: #fff;
+            padding: 1px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            object-fit: contain;
+        }
+        .title-area h1 {
+            font-size: 80px;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 3px 3px 6px rgba(0,0,0,0.4);
+        }
+        .title-area p {
+            font-size: 35px;
+            margin: 15px 0 0 0;
+            font-weight: 700;
+            color: #ffeb3b;
+        }
+        .catalog-grid {
+            padding: 60px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 50px;
+        }
+        .item-card {
+            background: #fff;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            border: 3px solid #e0e0e0;
+            transition: transform 0.3s;
+        }
+        .item-img {
+            width: 100%;
+            height: 400px;
+            object-fit: cover;
+            border-bottom: 3px solid #e0e0e0;
+        }
+        .item-info {
+            padding: 25px;
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(to bottom, #fff, #f9f9f9);
+        }
+        .item-name {
+            font-size: 20px;
+            font-weight: 700;
+            color: #b71c1c;
+            word-break: break-all;
+        }
+        .footer {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 50px;
+            font-size: 28px;
+            margin-top: 40px;
+        }
+        .footer span {
+            color: #ffeb3b;
+            font-weight: 900;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+<img src="file:///home/fred-stive/Bureau/PRICE/Fred.png" class="logo" alt="Fred Logo">
+
+        <div class="title-area">
+            <h1>FRED'S PRICE BREAKER</h1>
+            <p>CATALOGUE COMPLET DES OFFRES</p>
+        </div>
+    </div>
+    
+    <div class="catalog-grid">
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251001-WA0005.jpg" class="item-img" alt="IMG-20251001-WA0005">
+            <div class="item-info">
+                <div class="item-name">IMG-20251001-WA0005</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251002-WA0001.jpg" class="item-img" alt="IMG-20251002-WA0001">
+            <div class="item-info">
+                <div class="item-name">IMG-20251002-WA0001</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251008-WA0051.jpg" class="item-img" alt="IMG-20251008-WA0051">
+            <div class="item-info">
+                <div class="item-name">IMG-20251008-WA0051</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251008-WA0052.jpg" class="item-img" alt="IMG-20251008-WA0052">
+            <div class="item-info">
+                <div class="item-name">IMG-20251008-WA0052</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251008-WA0053.jpg" class="item-img" alt="IMG-20251008-WA0053">
+            <div class="item-info">
+                <div class="item-name">IMG-20251008-WA0053</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251008-WA0054.jpg" class="item-img" alt="IMG-20251008-WA0054">
+            <div class="item-info">
+                <div class="item-name">IMG-20251008-WA0054</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251010-WA0026.jpg" class="item-img" alt="IMG-20251010-WA0026">
+            <div class="item-info">
+                <div class="item-name">IMG-20251010-WA0026</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251010-WA0038.jpg" class="item-img" alt="IMG-20251010-WA0038">
+            <div class="item-info">
+                <div class="item-name">IMG-20251010-WA0038</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251010-WA0039.jpg" class="item-img" alt="IMG-20251010-WA0039">
+            <div class="item-info">
+                <div class="item-name">IMG-20251010-WA0039</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251016-WA0004.jpg" class="item-img" alt="IMG-20251016-WA0004">
+            <div class="item-info">
+                <div class="item-name">IMG-20251016-WA0004</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251016-WA0012.jpg" class="item-img" alt="IMG-20251016-WA0012">
+            <div class="item-info">
+                <div class="item-name">IMG-20251016-WA0012</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251016-WA0013.jpg" class="item-img" alt="IMG-20251016-WA0013">
+            <div class="item-info">
+                <div class="item-name">IMG-20251016-WA0013</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251016-WA0014.jpg" class="item-img" alt="IMG-20251016-WA0014">
+            <div class="item-info">
+                <div class="item-name">IMG-20251016-WA0014</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251016-WA0015.jpg" class="item-img" alt="IMG-20251016-WA0015">
+            <div class="item-info">
+                <div class="item-name">IMG-20251016-WA0015</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251017-WA0031.jpg" class="item-img" alt="IMG-20251017-WA0031">
+            <div class="item-info">
+                <div class="item-name">IMG-20251017-WA0031</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251018-WA0016.jpg" class="item-img" alt="IMG-20251018-WA0016">
+            <div class="item-info">
+                <div class="item-name">IMG-20251018-WA0016</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251018-WA0019.jpg" class="item-img" alt="IMG-20251018-WA0019">
+            <div class="item-info">
+                <div class="item-name">IMG-20251018-WA0019</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251021-WA0011.jpg" class="item-img" alt="IMG-20251021-WA0011">
+            <div class="item-info">
+                <div class="item-name">IMG-20251021-WA0011</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251021-WA0016.jpg" class="item-img" alt="IMG-20251021-WA0016">
+            <div class="item-info">
+                <div class="item-name">IMG-20251021-WA0016</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251101-WA0064.jpg" class="item-img" alt="IMG-20251101-WA0064">
+            <div class="item-info">
+                <div class="item-name">IMG-20251101-WA0064</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251111-WA0067.jpg" class="item-img" alt="IMG-20251111-WA0067">
+            <div class="item-info">
+                <div class="item-name">IMG-20251111-WA0067</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251113-WA0023.jpg" class="item-img" alt="IMG-20251113-WA0023">
+            <div class="item-info">
+                <div class="item-name">IMG-20251113-WA0023</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251120-WA0027.jpg" class="item-img" alt="IMG-20251120-WA0027">
+            <div class="item-info">
+                <div class="item-name">IMG-20251120-WA0027</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251120-WA0028.jpg" class="item-img" alt="IMG-20251120-WA0028">
+            <div class="item-info">
+                <div class="item-name">IMG-20251120-WA0028</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251121-WA0016.jpg" class="item-img" alt="IMG-20251121-WA0016">
+            <div class="item-info">
+                <div class="item-name">IMG-20251121-WA0016</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251128-WA0014.jpg" class="item-img" alt="IMG-20251128-WA0014">
+            <div class="item-info">
+                <div class="item-name">IMG-20251128-WA0014</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251201-WA0015.jpg" class="item-img" alt="IMG-20251201-WA0015">
+            <div class="item-info">
+                <div class="item-name">IMG-20251201-WA0015</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251206-WA0009.jpg" class="item-img" alt="IMG-20251206-WA0009">
+            <div class="item-info">
+                <div class="item-name">IMG-20251206-WA0009</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251206-WA0011.jpg" class="item-img" alt="IMG-20251206-WA0011">
+            <div class="item-info">
+                <div class="item-name">IMG-20251206-WA0011</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251206-WA0013.jpg" class="item-img" alt="IMG-20251206-WA0013">
+            <div class="item-info">
+                <div class="item-name">IMG-20251206-WA0013</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251206-WA0015.jpg" class="item-img" alt="IMG-20251206-WA0015">
+            <div class="item-info">
+                <div class="item-name">IMG-20251206-WA0015</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251206-WA0017.jpg" class="item-img" alt="IMG-20251206-WA0017">
+            <div class="item-info">
+                <div class="item-name">IMG-20251206-WA0017</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251206-WA0019.jpg" class="item-img" alt="IMG-20251206-WA0019">
+            <div class="item-info">
+                <div class="item-name">IMG-20251206-WA0019</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251209-WA0060.jpg" class="item-img" alt="IMG-20251209-WA0060">
+            <div class="item-info">
+                <div class="item-name">IMG-20251209-WA0060</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251209-WA0077.jpg" class="item-img" alt="IMG-20251209-WA0077">
+            <div class="item-info">
+                <div class="item-name">IMG-20251209-WA0077</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20251212-WA0048.jpg" class="item-img" alt="IMG-20251212-WA0048">
+            <div class="item-info">
+                <div class="item-name">IMG-20251212-WA0048</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/IMG-20260108-WA0009.jpg" class="item-img" alt="IMG-20260108-WA0009">
+            <div class="item-info">
+                <div class="item-name">IMG-20260108-WA0009</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260306_145321_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260306_145321_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260306_145321_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260306_145544_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260306_145544_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260306_145544_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260306_193311_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260306_193311_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260306_193311_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260307_101347_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260307_101347_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260307_101347_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260310_103504_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260310_103504_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260310_103504_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260310_104626_Google.jpg" class="item-img" alt="Screenshot_20260310_104626_Google">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260310_104626_Google</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260310_104732_Google.jpg" class="item-img" alt="Screenshot_20260310_104732_Google">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260310_104732_Google</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260310_104813_Google.jpg" class="item-img" alt="Screenshot_20260310_104813_Google">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260310_104813_Google</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260311_111758_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260311_111758_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260311_111758_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260311_140323_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260311_140323_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260311_140323_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260314_220421_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260314_220421_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260314_220421_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260318_100506_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260318_100506_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260318_100506_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260318_100616_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260318_100616_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260318_100616_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260318_100813_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260318_100813_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260318_100813_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260318_100945_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260318_100945_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260318_100945_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260318_102515_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260318_102515_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260318_102515_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260318_120403_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260318_120403_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260318_120403_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260318_121618_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260318_121618_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260318_121618_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260319_171222_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260319_171222_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260319_171222_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260321_114737_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260321_114737_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260321_114737_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260321_114852_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260321_114852_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260321_114852_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260327_165036_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260327_165036_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260327_165036_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260327_180211_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260327_180211_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260327_180211_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260330_143242_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260330_143242_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260330_143242_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260330_143321_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260330_143321_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260330_143321_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/Screenshot_20260330_143418_WhatsAppBusiness.jpg" class="item-img" alt="Screenshot_20260330_143418_WhatsAppBusiness">
+            <div class="item-info">
+                <div class="item-name">Screenshot_20260330_143418_WhatsAppBusiness</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_1009496444639569.jpeg" class="item-img" alt="received_1009496444639569">
+            <div class="item-info">
+                <div class="item-name">received_1009496444639569</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_1443648133377802.jpeg" class="item-img" alt="received_1443648133377802">
+            <div class="item-info">
+                <div class="item-name">received_1443648133377802</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_1514931502971485.jpeg" class="item-img" alt="received_1514931502971485">
+            <div class="item-info">
+                <div class="item-name">received_1514931502971485</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_1516944766117754.jpeg" class="item-img" alt="received_1516944766117754">
+            <div class="item-info">
+                <div class="item-name">received_1516944766117754</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_1700960094643680.jpeg" class="item-img" alt="received_1700960094643680">
+            <div class="item-info">
+                <div class="item-name">received_1700960094643680</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_1810193796270489.jpeg" class="item-img" alt="received_1810193796270489">
+            <div class="item-info">
+                <div class="item-name">received_1810193796270489</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_1848016743264501.jpeg" class="item-img" alt="received_1848016743264501">
+            <div class="item-info">
+                <div class="item-name">received_1848016743264501</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_1923428861907883.jpeg" class="item-img" alt="received_1923428861907883">
+            <div class="item-info">
+                <div class="item-name">received_1923428861907883</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_2226356571171620.jpeg" class="item-img" alt="received_2226356571171620">
+            <div class="item-info">
+                <div class="item-name">received_2226356571171620</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_25017836021186077.jpeg" class="item-img" alt="received_25017836021186077">
+            <div class="item-info">
+                <div class="item-name">received_25017836021186077</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_2876158062580948.jpeg" class="item-img" alt="received_2876158062580948">
+            <div class="item-info">
+                <div class="item-name">received_2876158062580948</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_701875312356661.jpeg" class="item-img" alt="received_701875312356661">
+            <div class="item-info">
+                <div class="item-name">received_701875312356661</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_792054293713669.jpeg" class="item-img" alt="received_792054293713669">
+            <div class="item-info">
+                <div class="item-name">received_792054293713669</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_818794430562300.jpeg" class="item-img" alt="received_818794430562300">
+            <div class="item-info">
+                <div class="item-name">received_818794430562300</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_843757397990098.jpeg" class="item-img" alt="received_843757397990098">
+            <div class="item-info">
+                <div class="item-name">received_843757397990098</div>
+            </div>
+        </div>
+
+        <div class="item-card">
+            <img src="file:///home/fred-stive/Bureau/PRICE/received_867974929418674.jpeg" class="item-img" alt="received_867974929418674">
+            <div class="item-info">
+                <div class="item-name">received_867974929418674</div>
+            </div>
+        </div>
+
+    </div>
+    <div class="footer">www.fredspricebreaker.com | <span>Des prix brisés, des affaires en or !</span></div>
+</body>
+</html>
