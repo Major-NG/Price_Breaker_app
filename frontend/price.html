@@ -522,8 +522,11 @@
                     <option value="🔌 Accessoires & Câblage">🔌 Accessoires & Câblage</option>
                     <option value="Non classé">Non classé</option>
                 </select>
-                <input type="text" id="product-image" placeholder="URL Image (Ex: assets/casque.jpg)"
-                    class="auth-input">
+                <label class="block mb-2 text-sm text-gray-600">Sélectionner une image sur l'appareil :</label>
+                <input type="file" id="product-image-file" accept="image/*" class="w-full border rounded p-2 mb-2 focus:ring focus:ring-[#fca311]">
+                <div class="text-xs text-gray-400 mb-2 text-center">-- OU --</div>
+                <input type="text" id="product-image" placeholder="Coller une URL d'image (Optionnel)"
+                    class="w-full border rounded p-2 mb-4 focus:ring focus:ring-[#fca311]">
                 <fieldset class="price-fieldset" style="margin-top:10px;">
                     <legend class="price-legend">Gestion (Stock & Réduction)</legend>
                     <input type="number" id="product-stock" placeholder="Stock disponible" required class="auth-input" value="100">

@@ -477,21 +477,50 @@ window.editProduct = function(id) {
 async function handleProductSubmit(e) {
     e.preventDefault();
     
-    const id = productId.value;
-    const newProduct = {
-        nom: productNom.value,
-        prix_public: parseFloat(productPrixPublic.value),
-        prix_partenaire: parseFloat(productPrixPartenaire.value),
-        categorie: productCategorie.value,
-        image_url: productImage.value || 'assets/LOGO_Price_Breaker.jpeg',
-        stock: productStock ? (parseInt(productStock.value) || 0) : 100,
-        allow_discount: productAllowDiscount ? (productAllowDiscount.checked ? 1 : 0) : 1
-    };
+    // Changement du bouton pour indiquer le chargement
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    const originalBtnText = submitBtn.innerText;
+    submitBtn.innerText = "Traitement en cours...";
+    submitBtn.disabled = true;
 
     try {
+        let finalImageUrl = productImage.value || 'assets/LOGO_Price_Breaker.jpeg';
+        const fileInput = document.getElementById('product-image-file');
+
+        // S'il y a un fichier, on l'upload d'abord sur notre backend
+        if (fileInput && fileInput.files && fileInput.files.length > 0) {
+            submitBtn.innerText = "Téléversement de l'image...";
+            const formData = new FormData();
+            formData.append('image', fileInput.files[0]);
+
+            const uploadRes = await fetch(`${API_BASE_URL}/upload`, {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${STATE.token}`
+                },
+                body: formData
+            });
+
+            if (!uploadRes.ok) throw new Error("Erreur lors de l'upload de l'image.");
+            const uploadData = await uploadRes.json();
+            finalImageUrl = uploadData.url;
+        }
+        
+        const id = productId.value;
+        const newProduct = {
+            nom: productNom.value,
+            prix_public: parseFloat(productPrixPublic.value),
+            prix_partenaire: parseFloat(productPrixPartenaire.value),
+            categorie: productCategorie.value,
+            image_url: finalImageUrl,
+            stock: productStock ? (parseInt(productStock.value) || 0) : 100,
+            allow_discount: productAllowDiscount ? (productAllowDiscount.checked ? 1 : 0) : 1
+        };
+
         const method = id ? 'PUT' : 'POST';
         const endpoint = id ? `${API_BASE_URL}/products/${id}` : `${API_BASE_URL}/products`;
         
+        submitBtn.innerText = "Sauvegarde du produit...";
         const res = await fetch(endpoint, {
             method,
             headers: { 
@@ -506,7 +535,10 @@ async function handleProductSubmit(e) {
         productModal.classList.add('hidden');
         await fetchProducts(); // Recharger les produits depuis le backend
     } catch(err) {
-        alert('Erreur lors de la sauvegarde du produit.');
+        alert(err.message || 'Erreur lors de la sauvegarde du produit.');
+    } finally {
+        submitBtn.innerText = originalBtnText;
+        submitBtn.disabled = false;
     }
 }
 

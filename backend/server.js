@@ -1,5 +1,11 @@
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
+const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
+
+// Configuration locale de multer (stocke temporairement dans un dossier "uploads")
+const upload = multer({ dest: 'uploads/' });
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('./database');
@@ -13,7 +19,31 @@ app.use(cors());
 app.use(express.json());
 
 // ==========================================
-// ROUTES AUTHENTIFICATION
+// ROUTES AUTHENTIFICATION & UPLOAD
+// ==========================================
+
+// Upload d'image vers Cloudinary (Admin uniquement)
+app.post('/api/upload', authenticateToken, isAdmin, upload.single('image'), async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ message: "Aucun fichier fourni." });
+        }
+        // Cloudinary va détecter automatiquement process.env.CLOUDINARY_URL
+        const result = await cloudinary.uploader.upload(req.file.path, {
+            folder: 'pricebreaker'
+        });
+        
+        // Supprimer le fichier local temporaire
+        fs.unlinkSync(req.file.path);
+        
+        res.json({ url: result.secure_url });
+    } catch (err) {
+        console.error("Erreur Cloudinary:", err);
+        // Nettoyage en cas d'erreur
+        if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
+        res.status(500).json({ message: "Erreur lors du téléversement de l'image." });
+    }
+});
 // ==========================================
 
 // Inscription
