@@ -3,9 +3,10 @@ const cors = require('cors');
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
+const os = require('os');
 
-// Configuration locale de multer (stocke temporairement dans un dossier "uploads")
-const upload = multer({ dest: 'uploads/' });
+// Configuration locale de multer (utilise le dossier temporaire du système)
+const upload = multer({ dest: os.tmpdir() });
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const db = require('./database');
@@ -38,10 +39,12 @@ app.post('/api/upload', authenticateToken, isAdmin, upload.single('image'), asyn
         
         res.json({ url: result.secure_url });
     } catch (err) {
-        console.error("Erreur Cloudinary:", err);
+        console.error("Erreur Cloudinary détaillée:", err);
         // Nettoyage en cas d'erreur
         if (req.file && fs.existsSync(req.file.path)) fs.unlinkSync(req.file.path);
-        res.status(500).json({ message: "Erreur lors du téléversement de l'image." });
+        
+        // Renvoyer le message exact d'erreur pour aider au débogage
+        res.status(500).json({ message: "Erreur Cloudinary: " + (err.message || JSON.stringify(err)) });
     }
 });
 // ==========================================
