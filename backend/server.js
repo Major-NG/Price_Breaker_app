@@ -6,11 +6,15 @@ const fs = require('fs');
 const os = require('os');
 
 // Configuration explicite et robuste de Cloudinary
-let cloudUrl = process.env.CLOUDINARY_URL;
-if (cloudUrl) {
-    // Nettoyer les guillemets et espaces que l'utilisateur aurait pu copier par erreur
-    cloudUrl = cloudUrl.replace(/^["']|["']$/g, '').trim();
-    
+if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) {
+    cloudinary.config({
+        cloud_name: process.env.CLOUDINARY_CLOUD_NAME.trim(),
+        api_key: process.env.CLOUDINARY_API_KEY.trim(),
+        api_secret: process.env.CLOUDINARY_API_SECRET.trim()
+    });
+    console.log("✅ Cloudinary configuré via variables séparées !");
+} else if (process.env.CLOUDINARY_URL) {
+    let cloudUrl = process.env.CLOUDINARY_URL.replace(/^["']|["']$/g, '').trim();
     const match = cloudUrl.match(/cloudinary:\/\/([^:]+):([^@]+)@(.+)/);
     if (match) {
         cloudinary.config({
@@ -18,12 +22,14 @@ if (cloudUrl) {
             api_secret: match[2],
             cloud_name: match[3]
         });
-        console.log("✅ Cloudinary configuré avec succès !");
+        console.log("✅ Cloudinary configuré avec succès via parsing de l'URL !");
+        // On supprime la variable de l'environnement pour que Cloudinary ne tente pas de la relire et de crasher
+        delete process.env.CLOUDINARY_URL;
     } else {
-        console.log("❌ Format de CLOUDINARY_URL invalide. Assurez-vous qu'elle commence par cloudinary://");
+        console.log("❌ Format de CLOUDINARY_URL invalide.");
     }
 } else {
-    console.log("❌ ATTENTION: CLOUDINARY_URL est INTROUVABLE dans les variables d'environnement !");
+    console.log("❌ ATTENTION: Aucune configuration Cloudinary trouvée dans l'environnement !");
 }
 
 // Configuration locale de multer (utilise le dossier temporaire du système)
