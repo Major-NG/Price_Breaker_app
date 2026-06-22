@@ -5,9 +5,23 @@ const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const os = require('os');
 
-// Configuration explicite de Cloudinary
-if (process.env.CLOUDINARY_URL) {
-    console.log("✅ CLOUDINARY_URL détectée par le serveur.");
+// Configuration explicite et robuste de Cloudinary
+let cloudUrl = process.env.CLOUDINARY_URL;
+if (cloudUrl) {
+    // Nettoyer les guillemets et espaces que l'utilisateur aurait pu copier par erreur
+    cloudUrl = cloudUrl.replace(/^["']|["']$/g, '').trim();
+    
+    const match = cloudUrl.match(/cloudinary:\/\/([^:]+):([^@]+)@(.+)/);
+    if (match) {
+        cloudinary.config({
+            api_key: match[1],
+            api_secret: match[2],
+            cloud_name: match[3]
+        });
+        console.log("✅ Cloudinary configuré avec succès !");
+    } else {
+        console.log("❌ Format de CLOUDINARY_URL invalide. Assurez-vous qu'elle commence par cloudinary://");
+    }
 } else {
     console.log("❌ ATTENTION: CLOUDINARY_URL est INTROUVABLE dans les variables d'environnement !");
 }
