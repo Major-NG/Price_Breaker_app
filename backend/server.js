@@ -5,6 +5,13 @@ const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 const os = require('os');
 
+// Configuration explicite de Cloudinary
+if (process.env.CLOUDINARY_URL) {
+    console.log("✅ CLOUDINARY_URL détectée par le serveur.");
+} else {
+    console.log("❌ ATTENTION: CLOUDINARY_URL est INTROUVABLE dans les variables d'environnement !");
+}
+
 // Configuration locale de multer (utilise le dossier temporaire du système)
 const upload = multer({ dest: os.tmpdir() });
 const bcrypt = require('bcrypt');
